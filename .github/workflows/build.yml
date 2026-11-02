@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
+          - os: macos-15
             name: Mac
           - os: windows-latest
             name: Windows
@@ -53,6 +53,7 @@ jobs:
           path: out/*.zip
   release:
     needs: build
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -60,6 +61,7 @@ jobs:
           path: dist
           merge-multiple: true
       - name: Publish release
+        if: hashFiles('dist/*.zip') != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
