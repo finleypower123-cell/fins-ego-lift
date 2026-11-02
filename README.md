@@ -3,7 +3,7 @@
 ## Open it in Projucer
 
 1. Install **JUCE 9** from juce.com. This project uses JUCE 9 features, so older versions won't open it cleanly.
-2. In Projucer, go to **Settings → Global Paths** and point **Path to JUCE** and **JUCE Modules** at your JUCE folder.
+2. In Projucer, go to **Global Paths** (Projucer menu on Mac, File menu on Windows). Set **Path to JUCE** to your JUCE folder and **JUCE Modules** to the `modules` folder *inside* it. Any path still shown in red is wrong.
 3. Open **FinsEgoLift5000.jucer**, pick the exporter (Xcode on Mac, Visual Studio 2022 on Windows) and click the IDE button.
 4. In the IDE, build the **Release** configuration of the formats you want (Standalone, VST3, AU or AAX).
 
