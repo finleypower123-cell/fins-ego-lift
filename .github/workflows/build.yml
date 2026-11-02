@@ -1,0 +1,68 @@
+# Builds the standalone app and the plug-ins on GitHub's Mac and Windows machines,
+# then publishes them as a downloadable Release on the repo's Releases page.
+name: build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            name: Mac
+          - os: windows-latest
+            name: Windows
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - name: Engine self-test
+        shell: bash
+        run: if [ -f build/FelEngineTest ]; then build/FelEngineTest; else build/Release/FelEngineTest.exe; fi
+      - name: Package (Mac)
+        if: runner.os == 'macOS'
+        run: |
+          cd "build/FinsEgoLift_artefacts/Release"
+          codesign --force --deep --sign - "Standalone/Fins Ego Lift 5000.app"
+          for f in "VST3/Fins Ego Lift 5000.vst3" "AU/Fins Ego Lift 5000.component" "AAX/Fins Ego Lift 5000.aaxplugin"; do [ -e "$f" ] && codesign --force --deep --sign - "$f" || true; done
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          ditto -c -k --keepParent "Standalone/Fins Ego Lift 5000.app" "$GITHUB_WORKSPACE/out/FinsEgoLift5000-Mac-App.zip"
+          ditto -c -k --keepParent VST3 "$GITHUB_WORKSPACE/out/FinsEgoLift5000-Mac-VST3.zip"
+          ditto -c -k --keepParent AU "$GITHUB_WORKSPACE/out/FinsEgoLift5000-Mac-AU.zip"
+          ditto -c -k --keepParent AAX "$GITHUB_WORKSPACE/out/FinsEgoLift5000-Mac-AAX-unsigned.zip"
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $r = "build/FinsEgoLift_artefacts/Release"
+          New-Item -ItemType Directory -Force out | Out-Null
+          Compress-Archive -Path "$r/Standalone/*" -DestinationPath out/FinsEgoLift5000-Windows-App.zip
+          Compress-Archive -Path "$r/VST3/*" -DestinationPath out/FinsEgoLift5000-Windows-VST3.zip
+          Compress-Archive -Path "$r/AAX/*" -DestinationPath out/FinsEgoLift5000-Windows-AAX-unsigned.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FinsEgoLift5000-${{ matrix.name }}
+          path: out/*.zip
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${{ github.run_number }}"
+          gh release create "$tag" dist/*.zip --repo "${{ github.repository }}" --title "Fin's Ego Lift 5000 (build ${{ github.run_number }})" \
+            --notes "Download the App zip for your computer, unzip it, open it and sing. Mac: if macOS blocks it, open System Settings > Privacy & Security and click Open Anyway. Windows: click More info > Run anyway."
