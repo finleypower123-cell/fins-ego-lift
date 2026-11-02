@@ -1,5 +1,27 @@
 # Fin's Ego Lift Vocal Lift Super Mega Sonic 5000
 
+## Open it on a Mac with Projucer (step by step)
+
+1. Install **Xcode** from the Mac App Store, then open it once so it finishes setting up.
+2. Download **JUCE 9** from juce.com/get-juce and unzip it, for example to your home folder as `JUCE`.
+3. Open **Projucer** (inside the JUCE folder). If macOS blocks it, right-click it and choose **Open**.
+4. Go to **Projucer → Global Paths…** and set:
+   - **Path to JUCE**: your JUCE folder, for example `/Users/you/JUCE`
+   - **JUCE Modules**: the `modules` folder inside it, for example `/Users/you/JUCE/modules`
+
+   Nothing should be red. Close the window.
+5. Double-click **FinsEgoLift5000.jucer**. At the top, pick **Xcode (macOS)** and click the Xcode icon.
+6. In Xcode, choose the **Fins Ego Lift 5000 - All** scheme, then **Product → Scheme → Edit Scheme → Run → Build Configuration: Release**, and press **Cmd+B**.
+7. Your builds are in `Builds/MacOSX/build/Release`:
+   - **Fins Ego Lift 5000.app** is the standalone app. Open it and sing (use headphones).
+   - **Fins Ego Lift 5000.component** is for Logic. Copy it to `/Library/Audio/Plug-Ins/Components`.
+   - **Fins Ego Lift 5000.vst3** is for Ableton and others. Copy it to `/Library/Audio/Plug-Ins/VST3`.
+   - **Fins Ego Lift 5000.aaxplugin** is for Pro Tools Developer, or for Pro Tools once it's signed.
+
+If Xcode asks about signing, choose **Sign to Run Locally**.
+
+---
+
 ## Open it in Projucer
 
 1. Install **JUCE 9** from juce.com. This project uses JUCE 9 features, so older versions won't open it cleanly.

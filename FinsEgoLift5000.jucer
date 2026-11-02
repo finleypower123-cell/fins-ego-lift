@@ -8,10 +8,10 @@
               pluginManufacturer="Ego Labs" pluginManufacturerCode="Eglb" pluginCode="F5k0"
               pluginFormats="buildAAX,buildAU,buildStandalone,buildVST3"
               pluginCharacteristicsValue="" pluginVST3Category="Fx,Reverb,Delay"
-              pluginAUMainType="&apos;aufx&apos;" pluginAAXCategory="AAX_ePlugInCategory_Reverb"
+              pluginAUMainType="&apos;aufx&apos;"
               aaxIdentifier="com.egolabs.finsegolift5000" displaySplashScreen="0"
               cppLanguageStandard="17"
-              defines="JUCE_WEB_BROWSER=0&#10;JUCE_USE_CURL=0&#10;JucePlugin_AAXDisableMultiMono=1">
+              defines="JUCE_WEB_BROWSER=0&#10;JUCE_USE_CURL=0&#10;_USE_MATH_DEFINES&#10;JucePlugin_AAXDisableMultiMono=1">
   <MAINGROUP id="NZB57S" name="Fins Ego Lift 5000">
     <GROUP id="IkxEV0" name="Source">
       <FILE id="JD2Tbj" name="FelEngine.h" compile="0" resource="0" file="Source/FelEngine.h"/>
@@ -29,15 +29,15 @@
                microphonePermissionsText="Fin&apos;s Ego Lift needs your microphone so you can sing into it."
                hardenedRuntime="0">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="Fins Ego Lift 5000"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="Fins Ego Lift 5000"
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Fins Ego Lift 5000" headerPath="../../Source"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Fins Ego Lift 5000" headerPath="../../Source"
                        macOSDeploymentTarget="11.0" osxArchitecture="64BitUniversal"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="Fins Ego Lift 5000"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="Fins Ego Lift 5000"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Fins Ego Lift 5000" headerPath="../../Source"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Fins Ego Lift 5000" headerPath="../../Source"/>
       </CONFIGURATIONS>
     </VS2022>
   </EXPORTFORMATS>
